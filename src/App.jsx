@@ -7,9 +7,18 @@ const App = () => {
   const [tasks, setTasks] = useState([]);
   console.log('tasks', tasks);
 
+  // useEffect(() => {
+  //   setTasks(JSON.parse(localStorage.getItem('tasks')))
+  // }, [])
+
   useEffect(() => {
-    setTasks(JSON.parse(localStorage.getItem('tasks')))
-  }, [])
+    const storedTasks = JSON.parse(localStorage.getItem('tasks'));
+    if (storedTasks === null) {
+      setTasks([]);
+    } else {
+      setTasks(storedTasks);
+    }
+  }, []);
   return (
     <>
       <Toaster />
