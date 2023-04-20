@@ -9,18 +9,18 @@ const App = () => {
   const [tasks, setTasks] = useState([]);
   console.log('tasks', tasks);
 
-  // useEffect(() => {
-  //   setTasks(JSON.parse(localStorage.getItem('tasks')))
-  // }, [])
-
   useEffect(() => {
-    const storedTasks = JSON.parse(localStorage.getItem('tasks'));
-    if (storedTasks === null) {
-      setTasks([]);
-    } else {
-      setTasks(storedTasks);
-    }
-  }, []);
+    setTasks(JSON.parse(localStorage.getItem('tasks')))
+  }, [])
+
+  // useEffect(() => {
+  //   const storedTasks = JSON.parse(localStorage.getItem('tasks'));
+  //   if (storedTasks === null) {
+  //     setTasks([]);
+  //   } else {
+  //     setTasks(storedTasks);
+  //   }
+  // }, []);
   return (
     <DndProvider backend={HTML5Backend}>
       <Toaster />
@@ -29,6 +29,7 @@ const App = () => {
         <ListTasks tasks={tasks} setTasks={setTasks} />
       </div>
     </DndProvider>
+
   )
 }
 

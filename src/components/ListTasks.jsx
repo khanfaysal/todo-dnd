@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
+import { useDrag, useDrop } from 'react-dnd/dist/hooks';
 
 const ListTasks = ({ tasks, setTasks }) => {
     const [todos, setTodos] = useState([]);
@@ -16,35 +17,59 @@ const ListTasks = ({ tasks, setTasks }) => {
         setClosed(filterClosed)
     }, [tasks]);
 
-    const todoStatuses = ['todo', 'inprogress', 'closed'];
+    const statuses = ['todo', 'inprogress', 'closed'];
 
 
     return (
         <div className='flex gap-16'>
-            {todoStatuses.map((todoStatus, index) => <Section key={index} todoStatus={todoStatus} tasks={tasks} setTasks={setTasks} todos={todos} inProgress={inProgress} closed={closed} />)}
+            {statuses.map((status, index) => <Section key={index} status={status} tasks={tasks} setTasks={setTasks} todos={todos} inProgress={inProgress} closed={closed} />)}
         </div>
     )
 }
 
 export default ListTasks;
 
-const Section = ({ todoStatus, tasks, setTasks, todos, inProgress, closed }) => {
+const Section = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
+
+    const [{ isOver }, drop] = useDrop(() => ({
+        accept: 'task',
+        drop: (item) => addItemToSection(item.id),
+        collect: (monitor) => ({
+            isOver: !!monitor.isOver()
+        }),
+    }));
+
     let text = 'Todo';
     let bg = 'bg-slate-500';
     let tasksToMap = todos;
 
-    if (todoStatus === 'inprogress') {
+    if (status === 'inprogress') {
         text = 'In Progress'
         bg = 'bg-purple-500'
         tasksToMap = inProgress
     }
-    if (todoStatus === 'closed') {
+    if (status === 'closed') {
         text = 'Closed'
         bg = 'bg-green-500'
         tasksToMap = closed
     }
+
+    const addItemToSection = (id) => {
+        console.log('dropped', id, status);
+        setTasks((prev) => {
+            const mTasks = prev.map(t => {
+                if (t.id === id) {
+                    return { ...t, status: status }
+                }
+                return t;
+            })
+            return mTasks
+        })
+
+    };
+
     return (
-        <div className={`w-64`}>
+        <div className={`w-64 rounded-md p-2 ${isOver ? 'bg-slate-200' : ''}`} ref={drop}>
             <Header text={text} bg={bg} count={tasksToMap.length} />
             {tasksToMap.length > 0 && tasksToMap.map(task => <Task key={task.id} task={task} tasks={tasks} setTasks={setTasks} />)}
         </div>
@@ -61,15 +86,24 @@ const Header = ({ text, bg, count }) => {
 }
 const Task = ({ task, tasks, setTasks }) => {
 
-    const handleRemove = (id) => {
+    const [{ isDragging }, drag] = useDrag(() => ({
+        type: 'task',
+        item: { id: task.id },
+        collect: (monitor) => ({
+            isDragging: !!monitor.isDragging()
+        })
+    }));
 
+    console.log(isDragging);
+
+    const handleRemove = (id) => {
         const fTasks = tasks.filter((t) => t.id !== id);
         localStorage.setItem('tasks', JSON.stringify(fTasks));
         setTasks(fTasks);
         toast('Task removed', { icon: "⛑️" })
     }
     return (
-        <div className={`relative p-4 mt-8 shadow-md rounded-md cursor-grab`}>
+        <div ref={drag} className={`relative p-4 mt-8 shadow-md rounded-md cursor-grab ${isDragging ? 'opacity-25' : 'opacity-100'}`}>
             <p> {task.name}</p>
             <button className='absolute bottom-1 right-1 text-red-300' onClick={() => handleRemove(task.id)}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
