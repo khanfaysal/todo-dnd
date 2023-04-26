@@ -10,7 +10,6 @@ import { DndProvider } from 'react-dnd';
 const App = () => {
 
   const [tasks, setTasks] = useState([]);
-  console.log('tasksssss', tasks);
 
   useEffect(() => {
     setTasks(JSON.parse(localStorage.getItem('tasks')))
@@ -19,7 +18,7 @@ const App = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <Toaster />
-      <div className='bg-slate-100 w-screen h-screen flex flex-col items-center pt-3 gap-16'>
+      <div className='bg-green-100 w-screen h-screen flex flex-col items-center pt-3 gap-16'>
         <CreateTask tasks={tasks} setTasks={setTasks} />
         <ListTasks tasks={tasks} setTasks={setTasks} />
       </div>
