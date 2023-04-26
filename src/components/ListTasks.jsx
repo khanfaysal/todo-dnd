@@ -73,7 +73,6 @@ const Section = ({ status, tasks, setTasks, todos, inprogress, closed }) => {
     const addItemToSection = (id) => {
 
         setTasks(prev => {
-            console.log('prev check', prev);
 
             const mTasks = prev.map(t => {
                 if (t.id === id) {
