@@ -5,11 +5,13 @@ import { useDrag, useDrop } from 'react-dnd';
 
 const ListTasks = ({ tasks, setTasks }) => {
 
+
     const [todos, setTodos] = useState([]);
     const [inprogress, setInprogress] = useState([]);
     const [closed, setClosed] = useState([]);
+
     useEffect(() => {
-        if (tasks) { // Add a check for `tasks`
+        if (tasks?.length) { // Add a check for `tasks`
             const fTodos = tasks.filter(task => task.status === 'todo');
             const fInProgress = tasks.filter(task => task.status === 'inprogress');
             const fClosed = tasks.filter(task => task.status === 'closed');
@@ -71,6 +73,7 @@ const Section = ({ status, tasks, setTasks, todos, inprogress, closed }) => {
     const addItemToSection = (id) => {
 
         setTasks(prev => {
+            console.log('prev check', prev);
 
             const mTasks = prev.map(t => {
                 if (t.id === id) {

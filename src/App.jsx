@@ -12,7 +12,7 @@ const App = () => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    setTasks(JSON.parse(localStorage.getItem('tasks')))
+    setTasks(JSON.parse(localStorage.getItem('tasks')) || [])
   }, [])
 
   return (
@@ -26,4 +26,4 @@ const App = () => {
   )
 }
 
-export default App
+export default App;
