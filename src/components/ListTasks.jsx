@@ -57,7 +57,7 @@ const Section = ({ status, tasks, setTasks, todos, inprogress, closed }) => {
     }
 
     const addItemToSection = (id) => {
-        console.log('dropped', id, status);
+
         setTasks(prev => {
 
             const mTasks = prev.map(t => {
@@ -101,14 +101,13 @@ const Task = ({ task, tasks, setTasks }) => {
 
 
     const handleRemove = (id) => {
-        console.log('remove handle')
-        const fTasks = tasks.filter(t => t.id !== id);
+        const fTasks = tasks.filter(taskData => taskData.id !== id);
         localStorage.setItem('tasks', JSON.stringify(fTasks))
         setTasks(fTasks);
         toast('Task Removed ⚠️')
     }
     return (
-        <div ref={drag} className={`relative p-4 mt-8 shadow-md rounded-md ${isDragging ? 'opacity-25' : 'opacity-100'} cursor-grab`}>
+        <div ref={drag} className={`relative p-4 mt-8 shadow-md rounded-md ${isDragging ? 'opacity-75' : 'opacity-100'} cursor-grab`}>
             <p>{task.name}</p>
             <button className='absolute text-red-400 bottom-1 right-1' onClick={() => handleRemove(task.id)}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

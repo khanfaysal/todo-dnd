@@ -10,7 +10,6 @@ const CreateTask = ({ tasks, setTasks }) => {
         name: '',
         status: 'todo'
     })
-    console.log(task);
 
     const handleSubmit = (e) => {
         e.preventDefault();
