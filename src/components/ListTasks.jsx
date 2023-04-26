@@ -22,7 +22,7 @@ const ListTasks = ({ tasks, setTasks }) => {
     const statuses = ['todo', 'inprogress', 'closed'];
 
     return (
-        <div className='flex gap-16'>
+        <div className='container flex flex-wrap items-center justify-center lg:items-start gap-16'>
             {statuses.map((status, index) => <Section key={index} status={status} tasks={tasks} setTasks={setTasks} todos={todos} inprogress={inprogress} closed={closed} />)}
         </div>
     )
@@ -30,6 +30,7 @@ const ListTasks = ({ tasks, setTasks }) => {
 
 export default ListTasks;
 
+// section component
 const Section = ({ status, tasks, setTasks, todos, inprogress, closed }) => {
 
     const [{ isOver }, drop] = useDrop(() => ({
@@ -81,9 +82,13 @@ const Section = ({ status, tasks, setTasks, todos, inprogress, closed }) => {
         </div>
     )
 }
+
+// header component
 const Header = ({ text, bg, count }) => {
     return <div className={`${bg} flex items-center h-12 pl-4 rounded-md uppercase text-white`}>{text}<div className='ml-2 bg-white w-5 h-5 text-black rounded-full flex items-center justify-center'>{count}</div></div >
 }
+
+// task component
 const Task = ({ task, tasks, setTasks }) => {
 
     const [{ isDragging }, drag] = useDrag(() => ({
@@ -94,7 +99,6 @@ const Task = ({ task, tasks, setTasks }) => {
         })
     }))
 
-    console.log(isDragging);
 
     const handleRemove = (id) => {
         console.log('remove handle')
