@@ -11,7 +11,7 @@ const ListTasks = ({ tasks, setTasks }) => {
     const [closed, setClosed] = useState([]);
 
     useEffect(() => {
-        if (tasks?.length) { // Add a check for `tasks`
+        if (tasks) { // Add a check for `tasks`
             const fTodos = tasks.filter(task => task.status === 'todo');
             const fInProgress = tasks.filter(task => task.status === 'inprogress');
             const fClosed = tasks.filter(task => task.status === 'closed');
