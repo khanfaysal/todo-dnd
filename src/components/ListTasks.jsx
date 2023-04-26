@@ -64,10 +64,14 @@ const Section = ({ status, tasks, setTasks, todos, inprogress, closed }) => {
                     return { ...t, status: status }
                 }
                 return t;
-            })
+            });
+
+            localStorage.setItem('tasks', JSON.stringify(mTasks))
+
+            toast('Task status changed 🧿')
 
             return mTasks;
-        })
+        });
     };
 
     return (
@@ -95,6 +99,7 @@ const Task = ({ task, tasks, setTasks }) => {
     const handleRemove = (id) => {
         console.log('remove handle')
         const fTasks = tasks.filter(t => t.id !== id);
+        localStorage.setItem('tasks', JSON.stringify(fTasks))
         setTasks(fTasks);
         toast('Task Removed ⚠️')
     }
